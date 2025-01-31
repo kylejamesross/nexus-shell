@@ -1,0 +1,91 @@
+@use "sass:color";
+$fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"};
+$accent: #{"@theme_selected_bg_color"};
+$radius: 7px;
+
+window.Bar {
+  border: none;
+  box-shadow: none;
+  background-color: $bg-color;
+  color: $fg-color;
+  font-size: 1.1em;
+  font-weight: bold;
+
+  label {
+    margin: 0 8px;
+  }
+
+  .Workspaces {
+    button {
+      all: unset;
+      background-color: transparent;
+    }
+
+    label {
+      transition: 200ms;
+      padding: 0 8px;
+      margin: 2px;
+      border-radius: $radius;
+      border: 1pt solid transparent;
+    }
+
+    .focused label {
+      color: $accent;
+      border-color: $accent;
+    }
+  }
+
+  .SysTray {
+    margin-right: 8px;
+
+    button {
+      padding: 0 4px;
+    }
+  }
+
+  .FocusedClient {
+    color: $accent;
+  }
+
+  .Media .Cover {
+    min-height: 1.2em;
+    min-width: 1.2em;
+    border-radius: $radius;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .Battery label {
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .AudioSlider {
+    * {
+      all: unset;
+    }
+
+    icon {
+      margin-right: .6em;
+    }
+
+    & {
+      margin: 0 1em;
+    }
+
+    highlight {
+      background-color: $accent;
+      min-height: .8em;
+      border-radius: $radius;
+    }
+
+    slider {
+      background-color: $fg-color;
+      border-radius: $radius;
+      min-height: 1em;
+      min-width: 1em;
+      margin: -.2em;
+    }
+  }
+}
