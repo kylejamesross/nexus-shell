@@ -17,7 +17,7 @@
   in {
     packages.${system}.default = pkgs.stdenv.mkDerivation {
       pname = "nexus";
-      src = ./nexus;
+      src = ./.;
       dontUnpack = true;
 
       nativeBuildInputs = with pkgs; [
@@ -55,8 +55,8 @@
       '';
 
       installPhase = ''
-        mkdir -p $out/bin
-        install $src $out/bin/nexus
+        mkdir -p "$out"/bin
+        install "$src" "$out"/bin/nexus
       '';
     };
   };
