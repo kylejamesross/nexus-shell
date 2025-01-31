@@ -5,56 +5,59 @@
       url = "github:aylur/astal";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ags = {
-      url = "github:aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
     astal,
-    ags,
   }: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
   in {
-    packages.${system}. default = pkgs.stdenvNoCC.mkDerivation rec {
-      name = "nexus";
-      src = ./.;
+    packages.${system}.default = pkgs.stdenv.mkDerivation {
+      pname = "nexus";
+      src = ./nexus;
+      dontUnpack = true;
 
-      nativeBuildInputs = [
-        ags.packages.${system}.default
-        pkgs.wrapGAppsHook
-        pkgs.gobject-introspection
+      nativeBuildInputs = with pkgs; [
+        wrapGAppsHook
+        gobject-introspection
       ];
 
-      buildInputs = with astal.packages.${system}; [
-        astal3
-        io
-        apps
-        battery
-        bluetooth
-        hyprland
-        mpris
-        network
-        notifd
-        powerprofiles
-        tray
-        wireplumber
-      ];
+      buildInputs =
+        (with astal.packages.${system}; [
+          astal3
+          io
+          apps
+          battery
+          bluetooth
+          hyprland
+          mpris
+          network
+          notifd
+          powerprofiles
+          tray
+          wireplumber
+        ])
+        ++ (with pkgs; [
+          gjs
+        ]);
 
-      installPhase =
-        #bash
-        ''
-          mkdir -p $out/bin
-          ags bundle app.ts $out/bin/${name}
+      preFixup = ''
+        gappsWrapperArgs+=(
+          --prefix PATH : ${with pkgs;
+          lib.makeBinPath [
+            dart-sass
+            fzf
+          ]}
+        )
+      '';
 
-
-
-        
-'';
+      installPhase = ''
+        mkdir -p $out/bin
+        install $src $out/bin/nexus
+      '';
     };
   };
 }
