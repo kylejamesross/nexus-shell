@@ -46,9 +46,9 @@
       ];
 
       installPhase = ''
-        mkdir -p $out/bin
-        ags bundle app.ts $out/bin/${name}
-
+        mkdir -p "$out"/bin
+        ags bundle app.ts "$out"/bin/${name}
+        chmod +x $out/bin/${name}
       
 '';
     };
