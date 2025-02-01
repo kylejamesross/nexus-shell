@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     astal = {
       url = "github:aylur/astal";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +49,7 @@
         mkdir -p "$out"/bin
         ags bundle app.ts "$out"/bin/${name}
         chmod +x $out/bin/${name}
+
       
 '';
     };
